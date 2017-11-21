@@ -21,6 +21,7 @@ class Posts extends Component {
 
         <div className="posts-lists"></div>
         <ul className="posts-list row">
+
           <li className="col-md-4">
             <div className="card">
               <img className="card-img-top" alt=""/>

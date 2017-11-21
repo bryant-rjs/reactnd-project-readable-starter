@@ -87,3 +87,79 @@ body {
 .score {
   float:right;
 }
+.post-title {
+  font-weight: 800;
+  font-size: 20px;
+}
+.post-image {
+  background-color: #80bdff;
+  height: 240px;
+  text-align: center;
+  line-height: 180px;
+  margin-top: 10px;
+  background: repeating-linear-gradient(
+    45deg,
+    #80bdff,
+    #80bdff 10px,
+    #5ba9ff 10px,
+    #5ba9ff 20px
+  );
+}
+.post-details {
+  border-bottom: 1px solid #eee;
+  border-radius:2px;
+  padding:10px;
+  margin:5px 0;
+}
+.post-score {
+  position:absolute;
+  right:0;
+  margin-right: 20px;
+  top:0;
+}
+.comment-title {
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+  padding: 1.25rem 1.25rem;
+  margin-top:10px;
+  position: relative;
+}
+.comments-icon {
+  position:absolute;
+  right: 20px;
+  top: 11px;
+  font-size: 28px;
+}
+.comment-title h5 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 20px;
+}
+.comment-list {
+  list-style:none;
+  padding: 0;
+  margin: 0;
+}
+.comment-list li {
+  border: 1px solid #eee;
+  border-top:0;
+  padding:10px 10px;
+}
+.post-body {
+  padding: 10px;
+  line-height: 1.75em;
+
+  margin-top:10px;
+}
+.comment-score {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.comment-score i {
+  font-size:18px;
+}
