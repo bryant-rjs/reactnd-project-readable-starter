@@ -3,6 +3,17 @@ body {
   padding: 0;
   font-family: 'Open Sans', sans-serif;
 }
+h5 {
+  font-weight: 800;
+  font-size: 20px;
+}
+h6 {
+  font-weight: 800;
+  font-size: 16px;
+}
+.blue {
+  color: #007bff;
+}
 .navigation {
   width: 100%;
   text-align: center;
@@ -162,4 +173,85 @@ body {
 }
 .comment-score i {
   font-size:18px;
+}
+.category-radio {
+  padding: 0;
+  margin: 0;
+}
+.category-radio li {
+  display: inline-block;
+  margin-right: 15px;
+}
+.category-radio li input {
+margin-right: 5px;
+}
+.form-write {
+  padding:0px;
+}
+.write-details input {
+  width: 100%;
+  border:0;
+}
+.write-details input[name="write-title"] {
+  font-size:42px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+.write-details input[name="write-name"] {
+  font-size:32px;
+  font-weight: 600;
+}
+.write-body textarea {
+  width: 100%;
+  font-size: 32px;
+  border: 0;
+  font-family: "Times New Roman", serif;
+}
+.write-category-title {
+  display: inline-block;
+  color:#666;
+}
+.category-radio {
+  display:inline-block;
+  margin-left: 15px;
+}
+.write-category {
+  margin-top: 10px;
+}
+.form-write input[type="submit"] {
+
+}
+.user-image {
+  background-color: #80bdff;
+  height: 44px;
+  width: 44px;
+  top: 0px;
+  margin-top: 3px;
+  text-align: center;
+  background: repeating-linear-gradient(
+    45deg,
+    #80bdff,
+    #80bdff 10px,
+    #5ba9ff 10px,
+    #5ba9ff 20px
+  );
+  border-radius: 40px;
+  float:left;
+  margin-right: 10px;
+}
+.user-details {
+  margin-top: 10px;
+}
+.user-nickname {
+  font-size: 15px;
+  color:#aaa;
+}
+.user-details input[type="text"] {
+  border: 0;
+  font-weight: 800;
+}
+.category-radio label {
+  border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 3px;
 }

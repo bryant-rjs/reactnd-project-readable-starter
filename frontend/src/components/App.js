@@ -3,6 +3,7 @@ import Nav from './Nav';
 import PostsControl from './PostsControl';
 import Posts from './Posts'
 import PostDetails from './PostDetails'
+import WritePost from './WritePost'
 
 class App extends Component {
   render() {
@@ -14,6 +15,8 @@ class App extends Component {
         <Posts/>
 
         <PostDetails/>
+
+        <WritePost/>
 
       </div>
     );
