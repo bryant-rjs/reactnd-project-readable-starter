@@ -15,24 +15,24 @@ class WritePost extends Component {
         <div className="row">
           <div className="col-md-12">
 
-            <form class="form-write" action="">
+            <form className="form-write" action="">
               <div className="write-category">
-                <span class="write-category-title"><h6>Post to Category:</h6></span>
+                <span className="write-category-title"><h6>Post to Category:</h6></span>
                 <ul className="category-radio">
                   <li className="radio">
-                    <label class="btn btn-outline-primary">
+                    <label className="btn btn-outline-primary">
                       <input name="category" type="radio" value="option1" checked={true} />
                       Technology
                     </label>
                   </li>
                   <li className="radio">
-                    <label class="btn btn-outline-primary">
+                    <label className="btn btn-outline-primary">
                       <input name="category" type="radio" value="option2" />
                       Creativity
                     </label>
                   </li>
                   <li className="radio">
-                    <label class="btn btn-outline-primary">
+                    <label className="btn btn-outline-primary">
                       <input name="category" type="radio" value="option3" />
                       Culture
                     </label>
@@ -52,7 +52,7 @@ class WritePost extends Component {
               <div className="write-body">
                 <textarea name="write-body" id="" placeholder="Type your text"></textarea>
               </div>
-              <input type="submit" value="Create Post" class="btn btn-primary"/>
+              <input type="submit" value="Create Post" className="btn btn-primary"/>
             </form>
 
           </div>

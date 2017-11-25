@@ -16,24 +16,24 @@ class PostsControl extends Component {
           </div> */}
 
           <div className="posts-categories">
-            <ul class="nav">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">All</a>
+            <ul className="nav">
+              <li className="nav-item">
+                <a className="nav-link active" href="#">All</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Technology</a>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Technology</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Creativity</a>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Creativity</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Culture</a>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Culture</a>
               </li>
             </ul>
           </div>
 
           <div className="create-post">
-            <button className="btn btn-primary">Create New Post <i class="fa fa-pencil" aria-hidden="true"></i></button>
+            <button className="btn btn-primary">Create New Post <i className="fa fa-pencil" aria-hidden="true"></i></button>
           </div>
 
         </div>

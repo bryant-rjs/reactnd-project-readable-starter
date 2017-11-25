@@ -22,8 +22,8 @@ class PostDetails extends Component {
                 <div className="post-author">Author</div>
                 <div className="post-timestamp"><small>Nov 11, 2017</small></div>
                 <div className="post-score">
-                  <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                  <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                  <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                  <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
                 </div>
               </div>
               <div className="post-body">
@@ -39,7 +39,7 @@ class PostDetails extends Component {
             <div className="col-md-4">
               <div className="comment-title">
                 <h5>Comments</h5>
-                <span class="comments-icon"><i class="fa fa-commenting-o" aria-hidden="true"></i></span>
+                <span className="comments-icon"><i className="fa fa-commenting-o" aria-hidden="true"></i></span>
               </div>
 
               <ul className="comment-list">
@@ -53,8 +53,8 @@ class PostDetails extends Component {
                       <div className="comment-timestamp"><small>Nov 12, 2017</small></div>
                     </div>
                     <div className="comment-score">
-                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                        <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
                     </div>
                   </div>
                 </li>
