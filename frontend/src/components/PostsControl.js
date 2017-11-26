@@ -6,28 +6,19 @@ class PostsControl extends Component {
     return (
         <div className="container clearfix">
 
-          {/* <div className="posts-categories">
-            <div className="btn-group" data-toggle="buttons">
-              <button type="button" className="btn btn-outline-primary active">All</button>
-              <button type="button" className="btn btn-outline-primary">Technology</button>
-              <button type="button" className="btn btn-outline-primary">Creativity</button>
-              <button type="button" className="btn btn-outline-primary">Culture</button>
-            </div>
-          </div> */}
-
           <div className="posts-categories">
             <ul className="nav">
               <li className="nav-item">
-                <a className="nav-link active" href="#">All</a>
+                <a className="nav-link active">All</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Technology</a>
+                <a className="nav-link">Technology</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Creativity</a>
+                <a className="nav-link">Creativity</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Culture</a>
+                <a className="nav-link">Culture</a>
               </li>
             </ul>
           </div>

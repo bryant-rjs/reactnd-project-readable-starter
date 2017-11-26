@@ -28,7 +28,7 @@ class Posts extends Component {
               <div className="card-body">
                 <h4 className="card-title">Card title</h4>
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn btn-outline-primary">Go somewhere</a>
+                <a className="btn btn-outline-primary">Go somewhere</a>
               </div>
               <div className="card-footer">
                 <small className="text-muted">Last updated 3 mins ago</small>
@@ -46,7 +46,7 @@ class Posts extends Component {
               <div className="card-body">
                 <h4 className="card-title">Card title</h4>
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn btn btn-outline-primary">Go somewhere</a>
+                <a className="btn btn btn-outline-primary">Go somewhere</a>
               </div>
               <div className="card-footer">
                 <small className="text-muted">Last updated 3 mins ago</small>
@@ -60,7 +60,7 @@ class Posts extends Component {
               <div className="card-body">
                 <h4 className="card-title">Card title</h4>
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn btn btn-outline-primary">Go somewhere</a>
+                <a className="btn btn btn-outline-primary">Go somewhere</a>
               </div>
               <div className="card-footer">
                 <small className="text-muted">Last updated 3 mins ago</small>
@@ -74,7 +74,7 @@ class Posts extends Component {
               <div className="card-body">
                 <h4 className="card-title">Card title</h4>
                 <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn btn btn-outline-primary">Go somewhere</a>
+                <a className="btn btn btn-outline-primary">Go somewhere</a>
               </div>
               <div className="card-footer">
                 <small className="text-muted">Last updated 3 mins ago</small>

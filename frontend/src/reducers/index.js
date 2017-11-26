@@ -1,20 +1,41 @@
 import { combineReducers } from 'redux'
 
 import {
-  FETCH_POSTS
+  FETCH_POSTS,
+  INITIAL_POSTS,
+  INITIAL_CATEGORIES,
 } from '../actions'
 
 function posts (state = {}, action) {
+  const { posts } = action
   switch(action.type) {
-    case 'FETCH_POSTS':
-      break;
+    case INITIAL_POSTS:
+      return {
+        posts
+      }
+    case FETCH_POSTS:
+        return state;
     default:
       return state;
   }
+
 }
 
-export default posts;
+function categories(state = {}, action) {
+  const { categories } = action;
 
-// export default combineReducers({
-//   posts,
-// })
+  switch(action.type) {
+    case INITIAL_CATEGORIES:
+      return {
+        categories: categories
+      }
+    default:
+      return state;
+  }
+
+}
+
+export default combineReducers({
+  posts,
+  categories,
+})

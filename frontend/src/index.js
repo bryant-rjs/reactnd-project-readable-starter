@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import reducer from './reducers'
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-// Redux Stuff
-import { createStore, applyMiddleware, compose } from 'redux'
-import { Provider } from 'react-redux'
-import axios from 'axios'
-import thunk from 'redux-thunk'
-import reducer from './reducers'
-
-const api = 'http://localhost:3001'
 
 //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
@@ -34,40 +30,14 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <BrowserRouter>
+
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
-  </BrowserRouter>,
+  ,
   document.getElementById('root')
 );
+
 registerServiceWorker();
-
-//store.dispatch({type: "FOO"});
-store.dispatch((dispatch) => {
-  //dispatch({type: "FOO"});
-  // do something async
-  // axios.get('http://localhost:3001/posts', {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'mode': 'cors',
-  //     'Authorization': '1018',
-  //   }
-  // }).then(res => {
-  //   console.log("hello");
-  //   console.log(res.data);
-  // });
-
-  fetch('http://localhost:3001/posts', {
-    headers: {
-      'Content-Type': 'application/json',
-      'mode': 'cors',
-      'Authorization': '1018',
-    }
-    }).then(res => res.json())
-    .then(data => {
-      console.log(data);
-    });
-
-})
-//store.dispatch({type: "BAR"});

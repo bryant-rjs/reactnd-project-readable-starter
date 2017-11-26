@@ -2,21 +2,36 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Nav from './Nav';
-import PostsControl from './PostsControl';
 import Posts from './Posts'
 import PostDetails from './PostDetails'
 import WritePost from './WritePost'
-import { fetchPosts } from '../actions'
-
-function componentDidMount() {
-  this.props.fetchPosts();
-
-  
-
-}
+import { initialPosts, initialCategories } from '../actions'
+import * as apiUtils from '../utils/api'
 
 class App extends Component {
+
+  componentDidMount() {
+    apiUtils.fetchPosts()
+      .then(posts => {
+        console.log(posts);
+        posts = posts.reduce((arr,cur,i) => {
+          arr[i] = cur;
+          return arr;
+        }, []);
+        console.log(posts);
+        this.props.initialPosts(posts);
+      });
+
+    apiUtils.fetchCategories()
+      .then(categories => {
+        console.log(categories);
+        this.props.initialCategories(categories);
+      });
+
+  }
+
   render() {
+
     return (
 
       <div>
@@ -32,14 +47,17 @@ class App extends Component {
     );
   }
 }
-function mapStateToProps() {
-
+function mapStateToProps(state) {
+  return {}
 }
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({fetchPosts: fetchPosts}, dispatch)
+  return bindActionCreators({
+    initialPosts: initialPosts,
+    initialCategories: initialCategories,
+  }, dispatch)
 
   // return {
-  //   fetchPosts: (data) => dispatch(fetchPosts(data))
+  //   initialPosts: (data) => dispatch(initialPosts(data))
   // }
 }
 

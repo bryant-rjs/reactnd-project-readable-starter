@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class WritePost extends Component {
+  handleChange = () => {
+
+  }
 
   render() {
     return (
@@ -15,25 +18,25 @@ class WritePost extends Component {
         <div className="row">
           <div className="col-md-12">
 
-            <form className="form-write" action="">
+            <form className="form-write" action="" onChange={this.handleChange}>
               <div className="write-category">
                 <span className="write-category-title"><h6>Post to Category:</h6></span>
                 <ul className="category-radio">
                   <li className="radio">
                     <label className="btn btn-outline-primary">
-                      <input name="category" type="radio" value="option1" checked={true} />
+                      <input name="category" type="radio" value="option1" checked={true} onChange={event => this.handleQuery(event.target.value)} />
                       Technology
                     </label>
                   </li>
                   <li className="radio">
                     <label className="btn btn-outline-primary">
-                      <input name="category" type="radio" value="option2" />
+                      <input name="category" type="radio" value="option2" onChange={event => this.handleQuery(event.target.value)} />
                       Creativity
                     </label>
                   </li>
                   <li className="radio">
                     <label className="btn btn-outline-primary">
-                      <input name="category" type="radio" value="option3" />
+                      <input name="category" type="radio" value="option3" onChange={event => this.handleQuery(event.target.value)} />
                       Culture
                     </label>
                   </li>
