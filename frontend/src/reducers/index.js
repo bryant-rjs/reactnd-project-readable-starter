@@ -6,31 +6,24 @@ import {
   INITIAL_CATEGORIES,
 } from '../actions'
 
-function posts (state = {}, action) {
-  const { posts } = action
+function posts (state = [], action) {
   switch(action.type) {
     case INITIAL_POSTS:
-      return {
-        posts
-      }
+      return action.posts
     case FETCH_POSTS:
-        return state;
+      return state
     default:
-      return state;
+      return state
   }
-
 }
 
-function categories(state = {}, action) {
-  const { categories } = action;
+function categories(state = [], action) {
 
   switch(action.type) {
     case INITIAL_CATEGORIES:
-      return {
-        categories: categories
-      }
+      return action.categories
     default:
-      return state;
+      return state
   }
 
 }

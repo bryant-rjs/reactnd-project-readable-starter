@@ -5,14 +5,14 @@ export const FETCH_POSTS = 'FETCH_POSTS';
 export function initialPosts( posts ) {
   return {
     type: INITIAL_POSTS,
-    posts: posts
+    posts
   }
 }
 
 export function initialCategories( categories ) {
   return {
     type: INITIAL_CATEGORIES,
-    categories: categories
+    categories
   }
 }
 

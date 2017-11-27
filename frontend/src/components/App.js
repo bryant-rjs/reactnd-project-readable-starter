@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Nav from './Nav';
@@ -10,49 +11,36 @@ import * as apiUtils from '../utils/api'
 
 class App extends Component {
 
-  componentDidMount() {
-    apiUtils.fetchPosts()
-      .then(posts => {
-        console.log(posts);
-        posts = posts.reduce((arr,cur,i) => {
-          arr[i] = cur;
-          return arr;
-        }, []);
-        console.log(posts);
-        this.props.initialPosts(posts);
-      });
-
-    apiUtils.fetchCategories()
-      .then(categories => {
-        console.log(categories);
-        this.props.initialCategories(categories);
-      });
-
-  }
-
   render() {
 
     return (
 
-      <div>
+      <div className="app">
         <Nav/>
 
-        <Posts/>
+        <Route exact path='/' component={Posts}/>
 
-        <PostDetails/>
+        <Route exact path='/category/:category_name' component={Posts}/>
 
-        <WritePost/>
+        <Route exact path='/category/:category_name/:post_id' render={() => (
+          <PostDetails/>
+        )}/>
+
+        <Route exact path='/write-post/' render={() => (
+          <WritePost/>
+        )}/>
 
       </div>
     );
   }
 }
-function mapStateToProps(state) {
-  return {}
+function mapStateToProps({posts, categories}) {
+  return {
+    categories,
+  }
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    initialPosts: initialPosts,
     initialCategories: initialCategories,
   }, dispatch)
 
