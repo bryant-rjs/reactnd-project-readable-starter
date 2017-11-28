@@ -10,7 +10,15 @@ import { initialPosts, initialCategories } from '../actions'
 import * as apiUtils from '../utils/api'
 
 class App extends Component {
+  componentWillReceiveProps = (nextProps) => {
 
+  }
+  componentDidUpdate = () => {
+
+  }
+  componentDidMount = () => {
+    
+  }
   render() {
 
     return (
@@ -36,11 +44,13 @@ class App extends Component {
 }
 function mapStateToProps({posts, categories}) {
   return {
+    posts,
     categories,
   }
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    initialPosts: initialPosts,
     initialCategories: initialCategories,
   }, dispatch)
 

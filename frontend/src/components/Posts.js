@@ -10,45 +10,80 @@ class Posts extends Component {
   state = {
     ourPosts: [],
     linkCategory: '',
+    sort: 'Date',
+  }
+
+  handleSortSelect = (string,event) => {
+    console.log(event.target.value);
+    this.setState({ sort: event.target.value });
+
+    switch(event.target.value) {
+      case 'Date': {
+        this.state.ourPosts.sort((a,b) => {
+          const dateA = new Date(a.timestamp);
+          const dateB = new Date(b.timestamp);
+          return dateB - dateA;
+        })
+        break;
+      }
+      case 'Highest Score': {
+        this.state.ourPosts.sort((a,b) => {
+          const scoreA = a.voteScore;
+          const scoreB = b.voteScore;
+          return  scoreA + scoreB;
+        })
+        break;
+      }
+      case 'Lowest Score': {
+        this.state.ourPosts.sort((a,b) => {
+          const scoreA = a.voteScore;
+          const scoreB = b.voteScore;
+          return scoreA - scoreB;
+        })
+        break;
+      }
+    }
+
   }
 
   componentWillReceiveProps = (nextProps) => {
-    console.log("asdf");
-  }
-  componentDidUpdate = () => {
-    console.log("yay");
+    if ( nextProps.match.params == null || (Object.getOwnPropertyNames(nextProps.match.params).length === 0) ) {
+      this.setState(() => ({
+        ourPosts: this.props.posts
+      }))
+    }
+    else {
+      this.setState(() => ({
+        ourPosts: this.props.posts.filter((post) => (
+          post.category === nextProps.match.params.category_name
+        ))
+      }))
+    }
   }
 
   componentDidMount = () => {
+
     apiUtils.fetchPosts()
       .then(posts => {
-        // posts = posts.reduce((obj,cur,i) => {
-        //   obj[i] = cur;
-        //   return obj;
-        // }, {});
+
         this.props.initialPosts(posts);
-        this.setState(() => ({
-          ourPosts: posts,
-        }))
-    });
+
+        if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
+          this.setState(() => ({
+            ourPosts: this.props.posts
+          }))
+        }
+        else {
+          this.setState(() => ({
+            ourPosts: this.props.posts.filter((post) => (
+              post.category === this.props.match.params.category_name
+            ))
+          }))
+        }
+    })
   }
-
-  componentDidUpdate = () => {
-
-    if ( this.props.match == null ) {
-      this.state.ourPosts = this.props.posts;
-    }
-    else {
-      this.state.ourPosts = this.props.posts.filter((post) => (
-        post.category == this.props.match.params.category_name
-      ))
-    }
-  }
-
-
 
   render() {
-
 
     return (
       <div className="container position-relative">
@@ -56,7 +91,7 @@ class Posts extends Component {
           <div className="category-title">All Posts</div>
           <div className="posts-sort">
             Order By:
-            <select>
+            <select value={this.state.sort} onChange={(event) => this.handleSortSelect('',event)}>
               <option>Date</option>
               <option>Highest Score</option>
               <option>Lowest Score</option>
@@ -89,66 +124,6 @@ class Posts extends Component {
               </div>
             </li>
           ))}
-
-          {/* <li className="col-md-4">
-            <div className="card">
-              <img className="card-img-top" alt=""/>
-              <div className="card-body">
-                <h4 className="card-title">Card title</h4>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a className="btn btn-outline-primary">Go somewhere</a>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">Last updated 3 mins ago</small>
-                <div className="score">
-                  <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                  <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li className="col-md-4">
-            <div className="card">
-              <img className="card-img-top" alt=""/>
-              <div className="card-body">
-                <h4 className="card-title">Card title</h4>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a className="btn btn btn-outline-primary">Go somewhere</a>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-          </li>
-
-          <li className="col-md-4">
-            <div className="card">
-              <img className="card-img-top" alt=""/>
-              <div className="card-body">
-                <h4 className="card-title">Card title</h4>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a className="btn btn btn-outline-primary">Go somewhere</a>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-          </li>
-
-          <li className="col-md-4">
-            <div className="card">
-              <img className="card-img-top" alt=""/>
-              <div className="card-body">
-                <h4 className="card-title">Card title</h4>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a className="btn btn btn-outline-primary">Go somewhere</a>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </div>
-            </div>
-          </li> */}
         </ul>
 
       </div>
