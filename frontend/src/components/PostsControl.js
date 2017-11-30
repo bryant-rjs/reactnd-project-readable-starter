@@ -8,13 +8,16 @@ import { initialCategories } from '../actions'
 const uuidv1 = require('uuid/v1');
 
 class PostsControl extends Component {
+  state = {
+    ourCategories: [],
+  }
   componentDidMount() {
     apiUtils.fetchCategories()
       .then(categories => {
         this.props.initialCategories(categories['categories']);
       });
   }
-  
+
 
   render() {
     const { categories } = this.props;
@@ -26,7 +29,7 @@ class PostsControl extends Component {
               <li className="nav-item ">
                 <Link to="/" className="nav-link">All</Link>
               </li>
-              {categories.map((category) => (
+              {this.state.ourCategories.map((category) => (
                 <li className="nav-item" key={category.name}>
                   <Link to={`/category/${category.name}`} className="nav-link">{capitalize(category.name)}</Link>
                 </li>
@@ -47,7 +50,9 @@ class PostsControl extends Component {
           </div>
 
           <div className="create-post">
-            <button className="btn btn-primary">Create New Post <i className="fa fa-pencil" aria-hidden="true"></i></button>
+            <Link to='/write-post'>
+              <button className="btn btn-primary" href="/">Create New Post <i className="fa fa-pencil" aria-hidden="true"></i></button>
+            </Link>
           </div>
 
         </div>

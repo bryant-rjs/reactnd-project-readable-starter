@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { initialPosts } from '../actions'
+import { initialPosts, voteUp } from '../actions'
 import * as apiUtils from '../utils/api'
 const uuidv1 = require('uuid/v1');
 
@@ -68,18 +69,28 @@ class Posts extends Component {
 
         this.props.initialPosts(posts);
 
+        var monkey = Object.keys(this.props.posts).map((item) => {
+          // console.log(item);
+          // console.log(this.props.posts[item]);
+          return this.props.posts[item]
+        });
+        console.log(monkey);
+
         if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
           this.setState(() => ({
-            ourPosts: this.props.posts
+            ourPosts: monkey
           }))
         }
         else {
           this.setState(() => ({
-            ourPosts: this.props.posts.filter((post) => (
-              post.category === this.props.match.params.category_name
-            ))
+            ourPosts:
+              monkey.filter((post) => (
+                post.category === this.props.match.params.category_name
+              ))
+
           }))
         }
+        console.log(this.state.ourPosts);
     })
   }
 
@@ -102,14 +113,15 @@ class Posts extends Component {
         <div className="posts-lists"></div>
         <ul className="posts-list row">
           {this.state.ourPosts
-            .map((post) => (
+            .map((post, index) => (
             <li className="col-md-4" key={post.id}>
               <div className="card">
                 <img className="card-img-top" alt=""/>
                 <div className="card-body">
                   <h4 className="card-title">{post.title}</h4>
                   <p className="card-text">{post.body}</p>
-                  <a className="btn btn-outline-primary">Read More</a>
+                  <Link to={`/category/${post.category}/${post.id}`} className="btn btn-outline-primary">Read More</Link>
+
                 </div>
                 <div className="card-footer">
                   <small className="text-muted">Last updated 3 mins ago</small>
@@ -117,8 +129,9 @@ class Posts extends Component {
                     <span>
                       {(post.voteScore > 0) ? '+' : '' }{post.voteScore}&nbsp;
                     </span>
-                    <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
+                    <i onClick={() => voteUp({post})} className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
                     <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                    <button onClick={() => this.props.voteUp({post,index})}>asdfsdf</button>
                   </div>
                 </div>
               </div>
@@ -141,6 +154,7 @@ function mapStateToProps({posts, categories}) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     initialPosts: initialPosts,
+    voteUp: voteUp,
   }, dispatch)
 
 }
