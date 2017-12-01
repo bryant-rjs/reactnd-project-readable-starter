@@ -9,8 +9,7 @@ import {
 } from '../actions'
 
 function posts (state = {}, action) {
-  const { voteScore, post, index } = action
-  console.log(action.posts);
+  const { voteScore, postID, index } = action
 
   switch(action.type) {
     case INITIAL_POSTS:
@@ -23,17 +22,21 @@ function posts (state = {}, action) {
     case FETCH_POSTS:
       return state
     case VOTE_UP:
-      //return state
       return {
         ...state,
-          [index]: {
-            ...state[index],
-              voteScore: voteScore+1,
+          [postID]: {
+            ...state[postID],
+            voteScore: state[postID].voteScore + 1
           }
       }
-
     case VOTE_DOWN:
-      return state
+      return {
+        ...state,
+          [postID]: {
+            ...state[postID],
+            voteScore: state[postID].voteScore - 1
+          }
+      }
     default:
       return state
   }

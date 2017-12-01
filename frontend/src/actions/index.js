@@ -24,16 +24,18 @@ export function fetchPosts() {
   }
 }
 
-export function voteUp({post, index}) {
+export function voteUp(postID, index) {
   return {
     type: VOTE_UP,
-    post,
+    postID,
     index,
   }
 }
 
-export function voteDown() {
+export function voteDown(postID, index) {
   return {
-    type: VOTE_DOWN
+    type: VOTE_DOWN,
+    postID,
+    index,
   }
 }
