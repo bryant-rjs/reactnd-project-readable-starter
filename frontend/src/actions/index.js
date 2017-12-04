@@ -1,4 +1,5 @@
 export const INITIAL_POSTS = 'INITIAL_POSTS';
+export const GET_POST = 'GET_POSTS';
 export const INITIAL_CATEGORIES = 'INITIAL_CATEGORIES';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const VOTE_UP = 'VOTE_UP';
@@ -7,6 +8,14 @@ export const VOTE_DOWN = 'VOTE_DOWN';
 export function initialPosts( posts ) {
   return {
     type: INITIAL_POSTS,
+    posts
+  }
+}
+
+export function getPost( posts ) {
+  console.log(posts, "what is posts");
+  return {
+    type: GET_POST,
     posts
   }
 }

@@ -17,7 +17,7 @@ class App extends Component {
 
   }
   componentDidMount = () => {
-    
+
   }
   render() {
 
@@ -30,9 +30,7 @@ class App extends Component {
 
         <Route exact path='/category/:category_name' component={Posts}/>
 
-        <Route exact path='/category/:category_name/:post_id' render={() => (
-          <PostDetails/>
-        )}/>
+        <Route exact path='/category/:category_name/:post_id' component={PostDetails} />
 
         <Route exact path='/write-post/' render={() => (
           <WritePost/>

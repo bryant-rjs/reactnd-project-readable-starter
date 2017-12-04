@@ -255,3 +255,8 @@ margin-right: 5px;
     padding: 10px;
     border-radius: 3px;
 }
+.btn-vote {
+  border:1px solid #ccc;
+  background:none;
+  border-radius:3px;
+}

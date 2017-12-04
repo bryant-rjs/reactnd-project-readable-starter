@@ -9,7 +9,15 @@ export function fetchPosts () {
     method: 'GET',
     headers: headers
   })
-    .then((res) => res.json())
+    .then((response) => response.json())
+      .then((data) => data)
+}
+export function getPost(postID) {
+  return fetch(`${api}/posts/${postID}`, {
+    method: 'GET',
+    headers: headers
+  })
+    .then((response) => response.json())
       .then((data) => data)
 }
 
@@ -18,6 +26,6 @@ export function fetchCategories () {
     method: 'GET',
     headers: headers
   })
-    .then((res) => res.json())
+    .then((response) => response.json())
       .then((data) => data)
 }

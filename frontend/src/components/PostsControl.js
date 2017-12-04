@@ -9,7 +9,7 @@ const uuidv1 = require('uuid/v1');
 
 class PostsControl extends Component {
   state = {
-    ourCategories: [],
+
   }
   componentDidMount() {
     apiUtils.fetchCategories()
@@ -20,6 +20,7 @@ class PostsControl extends Component {
 
 
   render() {
+    
     const { categories } = this.props;
     return (
         <div className="container clearfix">
@@ -29,7 +30,7 @@ class PostsControl extends Component {
               <li className="nav-item ">
                 <Link to="/" className="nav-link">All</Link>
               </li>
-              {this.state.ourCategories.map((category) => (
+              {this.props.myCategories.map((category) => (
                 <li className="nav-item" key={category.name}>
                   <Link to={`/category/${category.name}`} className="nav-link">{capitalize(category.name)}</Link>
                 </li>
@@ -62,8 +63,12 @@ class PostsControl extends Component {
 }
 
 function mapStateToProps({posts, categories}) {
+
   return {
     categories,
+    myCategories: Object.keys(categories).map((item) => {
+      return categories[item]
+    }),
   }
 }
 function mapDispatchToProps(dispatch) {

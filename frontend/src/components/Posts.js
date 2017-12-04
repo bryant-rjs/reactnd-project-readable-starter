@@ -17,12 +17,12 @@ class Posts extends Component {
   }
 
   handleSortSelect = (string,event) => {
-    //console.log(event.target.value);
+    console.log(event.target.value);
     this.setState({ sort: event.target.value });
 
     switch(event.target.value) {
       case 'Date': {
-        this.state.ourPosts.sort((a,b) => {
+        this.props.myPosts.sort((a,b) => {
           const dateA = new Date(a.timestamp);
           const dateB = new Date(b.timestamp);
           return dateB - dateA;
@@ -30,15 +30,15 @@ class Posts extends Component {
         break;
       }
       case 'Highest Score': {
-        this.state.ourPosts.sort((a,b) => {
+        this.props.myPosts.sort((a,b) => {
           const scoreA = a.voteScore;
           const scoreB = b.voteScore;
-          return  scoreA + scoreB;
+          return  scoreB - scoreA;
         })
         break;
       }
       case 'Lowest Score': {
-        this.state.ourPosts.sort((a,b) => {
+        this.props.myPosts.sort((a,b) => {
           const scoreA = a.voteScore;
           const scoreB = b.voteScore;
           return scoreA - scoreB;
@@ -52,19 +52,11 @@ class Posts extends Component {
   componentWillReceiveProps = (nextProps) => {
     if (this.state.loadedPosts) {
       if ( nextProps.match.params == null || (Object.getOwnPropertyNames(nextProps.match.params).length === 0) ) {
-        // this.setState(() => ({
-        //   ourPosts: Object.keys(this.props.posts).map((item) => {
-        //     return this.props.posts[item]
-        //   })
-        // }))
+        console.log("test2");
         this.setState(() => ({chosenCategory: ''}))
       }
       else {
-        // this.setState(() => ({
-        //   ourPosts: Object.keys(this.props.posts).filter((post) => (
-        //     this.props.posts[post].category === nextProps.match.params.category_name
-        //   ))
-        // }))
+        console.log("test");
         this.setState(() => ({chosenCategory: nextProps.match.params.category_name}))
       }
     }
@@ -81,37 +73,38 @@ class Posts extends Component {
 
         if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
           this.setState(() => ({
-            ourPosts: Object.keys(this.props.posts).map((item) => {
-              return this.props.posts[item]
-            })
+            chosenCategory: '',
+            // ourPosts: Object.keys(this.props.posts).map((item) => {
+            //   return this.props.posts[item]
+            // })
           }))
         }
         else {
           this.setState(() => ({
-            ourPosts: arrPosts.filter((post) => (
-                post.category === this.props.match.params.category_name
-              ))
+            chosenCategory: this.props.match.params.category_name,
+            // ourPosts: arrPosts.filter((post) => (
+            //     post.category === this.props.match.params.category_name
+            //   ))
           }))
         }
-        this.setState(() => {
-          loadedPosts: true
-        })
 
-        console.log(this.props.myPosts);
+        this.setState(() => ({
+          loadedPosts: true
+        }))
+
     })
   }
 
   render() {
-    if (this.state.chosenCategory !== '') {
-      this.props.myPosts.filter((cur) => (
-        cur.category === this.state.chosenCategory
-      ))
-    } else {
-      this.props.myPosts.filter((cur) => (
-        cur.category === this.state.chosenCategory
-      ))
-    }
-
+    // if (this.state.chosenCategory !== '') {
+    //   this.props.myPosts.filter((cur) => (
+    //     cur.category === this.state.chosenCategory
+    //   ))
+    // } else {
+    //   this.props.myPosts.filter((cur) => (
+    //     cur.category === this.state.chosenCategory
+    //   ))
+    // }
 
     return (
       <div className="container position-relative">
@@ -180,10 +173,10 @@ class Posts extends Component {
                     <span>
                       {(post.voteScore > 0) ? '+' : '' }{post.voteScore}&nbsp;
                     </span>
-                    <i onClick={() => voteUp({post})} className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
-                    <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                    <button onClick={() => this.props.voteUp(post.id,index)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                    <button onClick={() => this.props.voteDown(post.id,index)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                    {/* <i onClick={() => voteUp({post})} className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
+                    <i className="fa fa-thumbs-o-down" aria-hidden="true"></i> */}
+                    <button className="btn-vote" onClick={() => this.props.voteUp(post.id,index)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                    <button className="btn-vote" onClick={() => this.props.voteDown(post.id,index)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                   </div>
                 </div>
               </div>
@@ -195,7 +188,6 @@ class Posts extends Component {
 
     )
   }
-
 }
 
 function mapStateToProps({posts, categories}) {
@@ -206,13 +198,13 @@ function mapStateToProps({posts, categories}) {
     }),
   }
 }
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     initialPosts: initialPosts,
     voteUp: voteUp,
     voteDown: voteDown,
   }, dispatch)
-
 }
 
 export default connect(
