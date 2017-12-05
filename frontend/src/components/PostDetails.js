@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { initialPosts, getPost, voteUp, voteDown } from '../actions'
+import { initialPosts, getPost, voteUp, voteDown, getComments, commentVoteUp, commentVoteDown } from '../actions'
 import * as apiUtils from '../utils/api'
 import { capitalize } from '../utils/helpers'
 
@@ -27,6 +27,15 @@ class PostDetails extends Component {
         this.props.initialPosts(posts);
       });
 
+    apiUtils.fetchPostComments(this.props.match.params.post_id)
+      .then(comments => {
+        var objComments = comments.reduce((obj, item, index) => {
+          obj[item.id] = item;
+          return obj;
+        }, {});
+        this.props.getComments(objComments);
+      });
+
     if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
 
     } else {
@@ -45,6 +54,7 @@ class PostDetails extends Component {
       });
   }
   render() {
+    console.log(this.props.allComments,"props comments");
     if (!this.state.postLoaded) {
       return (
         <div className="container">
@@ -60,8 +70,8 @@ class PostDetails extends Component {
     }
     else {
       var postDate = new Date(this.state.myPost.timestamp).toLocaleString();
-      return (
 
+      return (
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -82,8 +92,6 @@ class PostDetails extends Component {
                     <span>
                       {(this.state.myPost.voteScore > 0) ? '+' : '' }{this.state.myPost.voteScore}&nbsp;
                     </span>
-                    <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                    <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
                     <button className="btn-vote" onClick={() => this.props.voteUp(this.state.myPost.id,0)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                     <button className="btn-vote" onClick={() => this.props.voteDown(this.state.myPost.id,0)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
 
@@ -103,24 +111,26 @@ class PostDetails extends Component {
                 </div>
 
                 <ul className="comment-list">
-                  <li>
-                    <div className="comment-body">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit, nunc rhoncus vestibulum fermentum</p>
-                    </div>
-                    <div className="comment-content position-relative">
-                      <div className="comment-details">
-                        <div className="comment-author"><small>Dave Franco</small></div>
-                        <div className="comment-timestamp"><small>Nov 12, 2017</small></div>
+                  {this.props.allComments.map((comment) => (
+                    <li key={comment.id}>
+                      <div className="comment-body">
+                        <p>{comment.body}</p>
                       </div>
-                      <div className="comment-score">
-                          <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                          <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                      <div className="comment-content position-relative">
+                        <div className="comment-details">
+                          <div className="comment-author"><small>{comment.author}</small></div>
+                          <div className="comment-timestamp"><small>{comment.timestamp}</small></div>
+                        </div>
+                        <div className="comment-score">
+                            <span>
+                              {(comment.voteScore > 0) ? '+' : '' }{comment.voteScore}&nbsp;
+                            </span>
+                            <button className="btn-vote" onClick={() => this.props.commentVoteUp(comment.id)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                            <button className="btn-vote" onClick={() => this.props.commentVoteDown(comment.id)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                  <li>Comment</li>
-                  <li>Comment</li>
-                  <li>Comment</li>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -130,9 +140,14 @@ class PostDetails extends Component {
   }
 }
 
-function mapStateToProps({posts}) {
+function mapStateToProps({posts, comments}) {
   return {
     allPosts: posts,
+    allComments: Object.keys(comments).map((item) => {
+      var newComment = comments[item];
+      newComment.timestamp = new Date(comments[item].timestamp).toLocaleString();
+      return newComment;
+    }),
   }
 }
 
@@ -142,6 +157,9 @@ function mapDispatchToProps(dispatch) {
     getPost: getPost,
     voteUp: voteUp,
     voteDown: voteDown,
+    getComments: getComments,
+    commentVoteUp: commentVoteUp,
+    commentVoteDown: commentVoteDown,
   }, dispatch)
 }
 

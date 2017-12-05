@@ -7,6 +7,9 @@ import {
   INITIAL_CATEGORIES,
   VOTE_UP,
   VOTE_DOWN,
+  COMMENT_VOTEUP,
+  COMMENT_VOTEDOWN,
+  GET_COMMENTS,
 } from '../actions'
 
 function posts (state = {}, action) {
@@ -45,7 +48,6 @@ function posts (state = {}, action) {
 }
 
 function categories(state = {}, action) {
-
   switch(action.type) {
     case INITIAL_CATEGORIES:
       var result = action.categories.reduce((obj, item, index) => {
@@ -56,10 +58,36 @@ function categories(state = {}, action) {
     default:
       return state
   }
+}
 
+function comments(state = {}, action) {
+  console.log(action);
+  switch(action.type) {
+    case GET_COMMENTS:
+      return action.comments;
+    case COMMENT_VOTEUP:
+      return {
+        ...state,
+        [action.commentID]: {
+          ...state[action.commentID],
+          voteScore: state[action.commentID].voteScore + 1
+        }
+      }
+    case COMMENT_VOTEDOWN:
+      return {
+        ...state,
+        [action.commentID]: {
+          ...state[action.commentID],
+          voteScore: state[action.commentID].voteScore - 1
+        }
+      }
+    default:
+      return state
+  }
 }
 
 export default combineReducers({
   posts,
   categories,
+  comments,
 })

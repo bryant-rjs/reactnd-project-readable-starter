@@ -4,6 +4,9 @@ export const INITIAL_CATEGORIES = 'INITIAL_CATEGORIES';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const VOTE_UP = 'VOTE_UP';
 export const VOTE_DOWN = 'VOTE_DOWN';
+export const GET_COMMENTS = 'GET_COMMENTS';
+export const COMMENT_VOTEUP = 'COMMENT_VOTEUP';
+export const COMMENT_VOTEDOWN = 'COMMENT_VOTEDOWN';
 
 export function initialPosts( posts ) {
   return {
@@ -46,5 +49,26 @@ export function voteDown(postID, index) {
     type: VOTE_DOWN,
     postID,
     index,
+  }
+}
+
+export function commentVoteUp(commentID) {
+  return {
+    type: COMMENT_VOTEUP,
+    commentID,
+  }
+}
+
+export function commentVoteDown(commentID) {
+  return {
+    type: COMMENT_VOTEDOWN,
+    commentID,
+  }
+}
+
+export function getComments(comments) {
+  return {
+    type: GET_COMMENTS,
+    comments,
   }
 }

@@ -29,3 +29,12 @@ export function fetchCategories () {
     .then((response) => response.json())
       .then((data) => data)
 }
+
+export function fetchPostComments(postID) {
+  return fetch(`${api}/posts/${postID}/comments`, {
+    method: 'GET',
+    headers: headers
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
