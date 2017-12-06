@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { initialPosts, getPost, voteUp, voteDown, getComments, commentVoteUp, commentVoteDown } from '../actions'
 import * as apiUtils from '../utils/api'
 import { capitalize } from '../utils/helpers'
+const uuidv1 = require('uuid/v1');
 
 class PostDetails extends Component {
   state = {
@@ -11,6 +12,22 @@ class PostDetails extends Component {
     curPostID: '',
     myPost: null,
     postLoaded: false,
+    newCommentName: '',
+    newCommentText: '',
+  }
+
+  handleCommentInput = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    this.setState({
+      [name]: value
+    });
+  }
+  handleCommentSubmit = (event) => {
+    event.preventDefault();
+    console.log(this.state.newCommentName);
+    console.log(this.state.newCommentText);
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -54,7 +71,6 @@ class PostDetails extends Component {
       });
   }
   render() {
-    console.log(this.props.allComments,"props comments");
     if (!this.state.postLoaded) {
       return (
         <div className="container">
@@ -132,6 +148,19 @@ class PostDetails extends Component {
                     </li>
                   ))}
                 </ul>
+
+                <div className="comment-writenew">
+                  <h5>Write New Comment</h5>
+                  <span className="comments-icon"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                </div>
+                <div className="comment-writebody">
+                  <form onSubmit={this.handleCommentSubmit}>
+                    <input name="newCommentName" value={this.state.newCommentName} type="text" placeholder="Your Name" onChange={this.handleCommentInput}/>
+                    <textarea name="newCommentText" value={this.state.newCommentText} placeholder="What's on your mind?" rows="3" cols="1" className="comment-input-box" onChange={this.handleCommentInput}/>
+                    <input type="submit" value="Post Comment" className="btn btn-info"/>
+                  </form>
+                </div>
+
               </div>
             </div>
           </div>
@@ -141,13 +170,20 @@ class PostDetails extends Component {
 }
 
 function mapStateToProps({posts, comments}) {
+  var arrComments = Object.keys(comments).map((item) => {
+    var newComment = comments[item];
+    newComment.timestamp = new Date(comments[item].timestamp).toLocaleString();
+    return newComment;
+  });
+  arrComments.sort((a,b) => {
+    const scoreA = a.voteScore;
+    const scoreB = b.voteScore;
+    return  scoreB - scoreA;
+  });
+
   return {
     allPosts: posts,
-    allComments: Object.keys(comments).map((item) => {
-      var newComment = comments[item];
-      newComment.timestamp = new Date(comments[item].timestamp).toLocaleString();
-      return newComment;
-    }),
+    allComments: arrComments,
   }
 }
 
