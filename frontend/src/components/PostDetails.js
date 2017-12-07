@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { initialPosts, getPost, voteUp, voteDown, getComments, commentVoteUp, commentVoteDown } from '../actions'
+import { initialPosts, getPost, voteUp, voteDown, getComments, commentVoteUp, commentVoteDown,
+addNewPostComment, deleteComment } from '../actions'
 import * as apiUtils from '../utils/api'
 import { capitalize } from '../utils/helpers'
 const uuidv1 = require('uuid/v1');
@@ -16,6 +17,16 @@ class PostDetails extends Component {
     newCommentText: '',
   }
 
+  handleCommentDelete = (commentId) => {
+    apiUtils.deleteComment(commentId)
+      .then(() => {
+        apiUtils.fetchPostComments(this.props.match.params.post_id)
+          .then(comments => {
+            this.props.getComments(comments);
+          });
+      });
+  }
+
   handleCommentInput = (event) => {
     const target = event.target;
     const name = target.name;
@@ -26,8 +37,32 @@ class PostDetails extends Component {
   }
   handleCommentSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.newCommentName);
-    console.log(this.state.newCommentText);
+    if (this.state.newCommentName === '' || this.state.newCommentText === '') {
+      // do nothing
+    } else {
+      // this.props.addNewPostComment(
+      //   uuidv1(),
+      //   Date.now(),
+      //   this.state.newCommentText,
+      //   this.state.newCommentName,
+      //   this.props.match.params.post_id,
+      // );
+
+      var newComment = {
+        id: uuidv1(),
+        timestamp: Date.now(),
+        body: this.state.newCommentText,
+        author: this.state.newCommentName,
+        parentId: this.props.match.params.post_id,
+      }
+      console.log(newComment, "pre api new comment");
+
+      apiUtils.putPostComment(newComment)
+      .then(data => {
+          console.log(data, "api put data");
+        });
+    }
+
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -46,11 +81,12 @@ class PostDetails extends Component {
 
     apiUtils.fetchPostComments(this.props.match.params.post_id)
       .then(comments => {
-        var objComments = comments.reduce((obj, item, index) => {
-          obj[item.id] = item;
-          return obj;
-        }, {});
-        this.props.getComments(objComments);
+        // var objComments = comments.reduce((obj, item, index) => {
+        //   obj[item.id] = item;
+        //   return obj;
+        // }, {});
+        // this.props.getComments(objComments);
+        this.props.getComments(comments);
       });
 
     if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
@@ -129,6 +165,9 @@ class PostDetails extends Component {
                 <ul className="comment-list">
                   {this.props.allComments.map((comment) => (
                     <li key={comment.id}>
+                      <div className="comment-delete">
+                        <button className="btn-delete" onClick={() => this.handleCommentDelete(comment.id)}><i className="fa fa-times" aria-hidden="true"></i></button>
+                      </div>
                       <div className="comment-body">
                         <p>{comment.body}</p>
                       </div>
@@ -196,6 +235,8 @@ function mapDispatchToProps(dispatch) {
     getComments: getComments,
     commentVoteUp: commentVoteUp,
     commentVoteDown: commentVoteDown,
+    addNewPostComment: addNewPostComment,
+    deleteComment: deleteComment,
   }, dispatch)
 }
 

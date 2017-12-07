@@ -202,7 +202,21 @@ h6 {
 .comment-list li {
   border: 1px solid #eee;
   border-top:0;
-  padding:10px 10px;
+  padding:20px 20px;
+  position: relative;
+}
+.comment-delete {
+  position: absolute;
+  top:0;
+  right:0px;
+  color:#dc3545;
+  font-size:20px;
+}
+.comment-delete .btn-delete {
+  color: #dc3545;
+  background: none;
+  border: 0;
+  cursor: pointer;
 }
 .post-body {
   padding: 10px;

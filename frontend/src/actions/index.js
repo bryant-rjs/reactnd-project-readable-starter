@@ -7,6 +7,8 @@ export const VOTE_DOWN = 'VOTE_DOWN';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const COMMENT_VOTEUP = 'COMMENT_VOTEUP';
 export const COMMENT_VOTEDOWN = 'COMMENT_VOTEDOWN';
+export const COMMENT_NEW = 'COMMENT_NEW';
+export const COMMENT_DELETE = 'COMMENT_DELETE';
 
 export function initialPosts( posts ) {
   return {
@@ -70,5 +72,20 @@ export function getComments(comments) {
   return {
     type: GET_COMMENTS,
     comments,
+  }
+}
+
+export function addNewPostComment(commentName, commentText) {
+  return {
+    type: COMMENT_NEW,
+    commentName,
+    commentText,
+  }
+}
+
+export function deleteComment(commentId) {
+  return {
+    type: COMMENT_DELETE,
+    commentId,
   }
 }

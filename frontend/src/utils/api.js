@@ -38,3 +38,22 @@ export function fetchPostComments(postID) {
     .then((response) => response.json())
       .then((data) => data)
 }
+
+export function putPostComment(newComment) {
+  return fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify( newComment ),
+  })
+    .then((response) => response.json())
+      //.then((data) => data)
+}
+
+export function deleteComment(commentId) {
+  return fetch(`${api}/comments/${commentId}`, {
+    method: 'DELETE',
+    headers: headers,
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}

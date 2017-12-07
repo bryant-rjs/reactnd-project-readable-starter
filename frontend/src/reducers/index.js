@@ -10,6 +10,8 @@ import {
   COMMENT_VOTEUP,
   COMMENT_VOTEDOWN,
   GET_COMMENTS,
+  COMMENT_NEW,
+  COMMENT_DELETE,
 } from '../actions'
 
 function posts (state = {}, action) {
@@ -64,7 +66,11 @@ function comments(state = {}, action) {
   console.log(action);
   switch(action.type) {
     case GET_COMMENTS:
-      return action.comments;
+      var objComments = action.comments.reduce((obj, item, index) => {
+        obj[item.id] = item;
+        return obj;
+      }, {});
+      return objComments;
     case COMMENT_VOTEUP:
       return {
         ...state,
@@ -81,6 +87,10 @@ function comments(state = {}, action) {
           voteScore: state[action.commentID].voteScore - 1
         }
       }
+    case COMMENT_NEW:
+      return state
+    case COMMENT_DELETE:
+      return state
     default:
       return state
   }
