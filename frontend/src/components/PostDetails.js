@@ -20,10 +20,7 @@ class PostDetails extends Component {
   handleCommentDelete = (commentId) => {
     apiUtils.deleteComment(commentId)
       .then(() => {
-        apiUtils.fetchPostComments(this.props.match.params.post_id)
-          .then(comments => {
-            this.props.getComments(comments);
-          });
+        this.props.deleteComment(commentId);
       });
   }
 
@@ -40,13 +37,6 @@ class PostDetails extends Component {
     if (this.state.newCommentName === '' || this.state.newCommentText === '') {
       // do nothing
     } else {
-      // this.props.addNewPostComment(
-      //   uuidv1(),
-      //   Date.now(),
-      //   this.state.newCommentText,
-      //   this.state.newCommentName,
-      //   this.props.match.params.post_id,
-      // );
 
       var newComment = {
         id: uuidv1(),
@@ -55,12 +45,21 @@ class PostDetails extends Component {
         author: this.state.newCommentName,
         parentId: this.props.match.params.post_id,
       }
-      console.log(newComment, "pre api new comment");
 
       apiUtils.putPostComment(newComment)
-      .then(data => {
-          console.log(data, "api put data");
-        });
+        .then(commentData => {
+          //console.log(data);
+          this.props.addNewPostComment(commentData);
+                  // apiUtils.fetchPostComments(this.props.match.params.post_id)
+                  //   .then(comments => {
+                  //     // var objComments = comments.reduce((obj, item, index) => {
+                  //     //   obj[item.id] = item;
+                  //     //   return obj;
+                  //     // }, {});
+                  //     // this.props.getComments(objComments);
+                  //     this.props.getComments(comments);
+                  //   });
+      });
     }
 
   }

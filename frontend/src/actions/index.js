@@ -75,11 +75,10 @@ export function getComments(comments) {
   }
 }
 
-export function addNewPostComment(commentName, commentText) {
+export function addNewPostComment(comment) {
   return {
     type: COMMENT_NEW,
-    commentName,
-    commentText,
+    comment,
   }
 }
 

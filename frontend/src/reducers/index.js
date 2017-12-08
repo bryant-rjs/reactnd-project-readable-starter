@@ -63,7 +63,7 @@ function categories(state = {}, action) {
 }
 
 function comments(state = {}, action) {
-  console.log(action);
+
   switch(action.type) {
     case GET_COMMENTS:
       var objComments = action.comments.reduce((obj, item, index) => {
@@ -88,9 +88,36 @@ function comments(state = {}, action) {
         }
       }
     case COMMENT_NEW:
-      return state
+      // console.log(state,"comment new state");
+      // console.log(action,"the full action");
+      // console.log(Object.keys(state),"object keys");
+      //state[action.comment.id] = action.comment;
+      //console.log(state,"full state again");
+
+      return {
+        ...state,
+          [action.comment.id]: action.comment,
+      }
     case COMMENT_DELETE:
-      return state
+      // console.log(state,"comment delete state");
+      //
+      // console.log(action,"the full action");
+      // console.log(Object.keys(state),"object keys");
+      // console.log(Object.keys(state).filter((id) => id !== action.commentId))
+      //
+      // console.log(Object.keys(state)
+      //   .filter((id) => id !== action.commentId)
+      //     .reduce((obj, item) => {
+      //       obj[item] = state[item];
+      //       return obj;
+      //     }, {}))
+
+      return Object.keys(state)
+        .filter((id) => id !== action.commentId)
+          .reduce((obj, item) => {
+            obj[item] = state[item];
+            return obj;
+          }, {})
     default:
       return state
   }

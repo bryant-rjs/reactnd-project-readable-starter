@@ -46,7 +46,7 @@ export function putPostComment(newComment) {
     body: JSON.stringify( newComment ),
   })
     .then((response) => response.json())
-      //.then((data) => data)
+      .then((data) => data)
 }
 
 export function deleteComment(commentId) {
