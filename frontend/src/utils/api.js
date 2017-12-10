@@ -20,6 +20,25 @@ export function getPost(postID) {
     .then((response) => response.json())
       .then((data) => data)
 }
+export function newPost(postData) {
+  console.log(postData,"post data");
+  return fetch(`${api}/posts`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify( postData ),
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
+export function deletePost(postId) {
+  console.log(postId,"post id delete post");
+  return fetch(`${api}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: headers,
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
 
 export function fetchCategories () {
   return fetch(`${api}/categories`, {

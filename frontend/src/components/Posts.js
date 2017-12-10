@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { initialPosts, voteUp, voteDown } from '../actions'
+import { initialPosts, voteUp, voteDown, deletePost } from '../actions'
 import * as apiUtils from '../utils/api'
 const uuidv1 = require('uuid/v1');
 
@@ -14,6 +14,13 @@ class Posts extends Component {
     sort: 'Date',
     loadedPosts: false,
     chosenCategory: ''
+  }
+
+  handlePostDelete = (postId) => {
+    apiUtils.deletePost(postId)
+      .then(() => {
+        this.props.deletePost(postId);
+      });
   }
 
   handleSortSelect = (string,event) => {
@@ -46,7 +53,6 @@ class Posts extends Component {
         break;
       }
     }
-
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -160,7 +166,16 @@ class Posts extends Component {
             .map((post, index) => (
             <li className="col-md-4" key={post.id}>
               <div className="card">
+                <div className="card-top">
+                  <div className="card-edit">
+                    <button className="btn btn-primary" onClick={() => this.handlePostDelete(post.id)}><i className="fa fa-pencil" aria-hidden="true"></i> Edit Post</button>
+                  </div>
+                  <div className="card-delete">
+                    <button onClick={() => this.handlePostDelete(post.id)} className="btn btn-danger"><i className="fa fa-times" aria-hidden="true"></i> Delete</button>
+                  </div>
+                </div>
                 <img className="card-img-top" alt=""/>
+
                 <div className="card-body">
                   <h4 className="card-title">{post.title}</h4>
                   <p className="card-text">{post.body}</p>
@@ -204,6 +219,7 @@ function mapDispatchToProps(dispatch) {
     initialPosts: initialPosts,
     voteUp: voteUp,
     voteDown: voteDown,
+    deletePost: deletePost,
   }, dispatch)
 }
 

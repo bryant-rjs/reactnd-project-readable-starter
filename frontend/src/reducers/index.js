@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import {
   FETCH_POSTS,
   INITIAL_POSTS,
+  DELETE_POST,
   GET_POST,
   INITIAL_CATEGORIES,
   VOTE_UP,
@@ -24,6 +25,13 @@ function posts (state = {}, action) {
         return obj;
       }, {})
       return result;
+    case DELETE_POST:
+      return Object.keys(state)
+        .filter((id) => id !== action.postId)
+          .reduce((obj, item) => {
+            obj[item] = state[item];
+            return obj;
+          }, {})
     case GET_POST:
       return state
     case FETCH_POSTS:

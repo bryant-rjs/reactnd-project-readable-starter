@@ -18,10 +18,12 @@ class PostDetails extends Component {
   }
 
   handleCommentDelete = (commentId) => {
-    apiUtils.deleteComment(commentId)
-      .then(() => {
-        this.props.deleteComment(commentId);
-      });
+    // apiUtils.deleteComment(commentId)
+    //   .then(() => {
+    //     this.props.deleteComment(commentId);
+    //   });
+
+    this.props.deleteComment(commentId);
   }
 
   handleCommentInput = (event) => {

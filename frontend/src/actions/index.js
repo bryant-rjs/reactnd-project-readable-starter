@@ -1,4 +1,5 @@
 export const INITIAL_POSTS = 'INITIAL_POSTS';
+export const DELETE_POST = 'DELETE_POST';
 export const GET_POST = 'GET_POSTS';
 export const INITIAL_CATEGORIES = 'INITIAL_CATEGORIES';
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -14,6 +15,13 @@ export function initialPosts( posts ) {
   return {
     type: INITIAL_POSTS,
     posts
+  }
+}
+
+export function deletePost( postId ) {
+  return {
+    type: DELETE_POST,
+    postId,
   }
 }
 

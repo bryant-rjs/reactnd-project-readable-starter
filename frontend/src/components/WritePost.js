@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { initialCategories } from '../actions'
 import { capitalize } from '../utils/helpers'
 import * as apiUtils from '../utils/api'
+import { Redirect  } from 'react-router-dom';
 const uuidv1 = require('uuid/v1');
 
 class WritePost extends Component {
@@ -14,9 +15,11 @@ class WritePost extends Component {
     newPostTitle: '',
     newPostBody: '',
     newPostName: '',
+    postSubmitted: false,
   }
 
   handleInputChange = (event) => {
+    console.log(event.target.name);
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -30,28 +33,32 @@ class WritePost extends Component {
   }
   handleWritePostSubmit = (event) => {
     event.preventDefault();
-    var newPost = {
+    var postData = {
       id: uuidv1(),
       timestamp: Date.now(),
       title: this.state.newPostTitle,
       body: this.state.newPostBody,
       author: this.state.newPostName,
-      category: '',
+      category: this.state.selectedCategory,
     }
+
+    apiUtils.newPost(postData)
+      .then(() => {
+        this.setState({postSubmitted: true})
+      });
   }
   handleCategoryChange = (e) => {
-    console.log(e.target.value);
     this.setState({selectedCategory: e.target.value});
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({categoriesLoaded: true});
+
   }
   componentDidMount() {
-
+    this.setState({categoriesLoaded: true});
   }
 
   render() {
-
+    //console.log(this.state);
     if(!this.state.categoriesLoaded) {
       return (
         <div className="container">
@@ -77,7 +84,9 @@ class WritePost extends Component {
           </div>
           <div className="row">
             <div className="col-md-12">
-
+              {this.state.postSubmitted && (
+                <Redirect to='/'/>
+              )}
               <form className="form-write" action="" onChange={this.handleWritePostChange} onSubmit={this.handleWritePostSubmit}>
                 <div className="write-category">
                   <span className="write-category-title"><h6>Post to Category:</h6></span>
@@ -152,5 +161,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(WritePost);
