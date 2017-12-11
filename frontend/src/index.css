@@ -344,3 +344,17 @@ margin-right: 5px;
   background:none;
   border-radius:3px;
 }
+.site-title-link {
+  text-decoration: none;
+  color: #212529;
+}
+.site-title-link:hover {
+  text-decoration: none;
+  color: #212529;
+}
+.edit-link {
+  color:#ffffff;
+}
+.edit-link:hover {
+  color:#ffffff;
+}

@@ -11,7 +11,7 @@ class Posts extends Component {
   state = {
     ourPosts: [],
     linkCategory: '',
-    sort: 'Date',
+    sort: 'Most Recent',
     loadedPosts: false,
     chosenCategory: ''
   }
@@ -28,7 +28,7 @@ class Posts extends Component {
     this.setState({ sort: event.target.value });
 
     switch(event.target.value) {
-      case 'Date': {
+      case 'Most Recent': {
         this.props.myPosts.sort((a,b) => {
           const dateA = new Date(a.timestamp);
           const dateB = new Date(b.timestamp);
@@ -111,6 +111,15 @@ class Posts extends Component {
     //     cur.category === this.state.chosenCategory
     //   ))
     // }
+    this.props.myPosts.map((item) => (
+      item.date = new Date(item.timestamp).toLocaleString()
+    ))
+
+    this.props.myPosts.map((item) => {
+      console.log(item)
+    })
+
+
 
     return (
       <div className="container position-relative">
@@ -119,7 +128,7 @@ class Posts extends Component {
           <div className="posts-sort">
             Order By:
             <select value={this.state.sort} onChange={(event) => this.handleSortSelect('',event)}>
-              <option>Date</option>
+              <option>Most Recent</option>
               <option>Highest Score</option>
               <option>Lowest Score</option>
             </select>
@@ -168,7 +177,11 @@ class Posts extends Component {
               <div className="card">
                 <div className="card-top">
                   <div className="card-edit">
-                    <button className="btn btn-primary" onClick={() => this.handlePostDelete(post.id)}><i className="fa fa-pencil" aria-hidden="true"></i> Edit Post</button>
+                    <button className="btn btn-primary">
+                      <Link to={`/edit-post/${post.id}`} className="edit-link">
+                        <i className="fa fa-pencil" aria-hidden="true"></i> Edit Post
+                      </Link>
+                    </button>
                   </div>
                   <div className="card-delete">
                     <button onClick={() => this.handlePostDelete(post.id)} className="btn btn-danger"><i className="fa fa-times" aria-hidden="true"></i> Delete</button>
@@ -183,7 +196,7 @@ class Posts extends Component {
 
                 </div>
                 <div className="card-footer">
-                  <small className="text-muted">Last updated 3 mins ago</small>
+                  <small className="text-muted">{post.date}</small>
                   <div className="score">
                     <span>
                       {(post.voteScore > 0) ? '+' : '' }{post.voteScore}&nbsp;
@@ -210,6 +223,10 @@ function mapStateToProps({posts, categories}) {
     posts,
     myPosts: Object.keys(posts).map((item) => {
       return posts[item]
+    }).sort((a,b) => {
+      const dateA = new Date(a.timestamp);
+      const dateB = new Date(b.timestamp);
+      return dateB - dateA;
     }),
   }
 }
