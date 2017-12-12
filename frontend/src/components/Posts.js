@@ -16,6 +16,18 @@ class Posts extends Component {
     chosenCategory: ''
   }
 
+  handleVote = (postId,direction) => {
+    console.log(direction,"the direction");
+    var directionData = {
+      option: direction,
+    }
+    apiUtils.scorePost(postId,directionData)
+      .then(() => {
+        if (directionData.option === 'upVote') this.props.voteUp(postId);
+        else this.props.voteDown(postId);
+      });
+  }
+
   handlePostDelete = (postId) => {
     apiUtils.deletePost(postId)
       .then(() => {
@@ -58,11 +70,9 @@ class Posts extends Component {
   componentWillReceiveProps = (nextProps) => {
     if (this.state.loadedPosts) {
       if ( nextProps.match.params == null || (Object.getOwnPropertyNames(nextProps.match.params).length === 0) ) {
-        console.log("test2");
         this.setState(() => ({chosenCategory: ''}))
       }
       else {
-        console.log("test");
         this.setState(() => ({chosenCategory: nextProps.match.params.category_name}))
       }
     }
@@ -203,8 +213,8 @@ class Posts extends Component {
                     </span>
                     {/* <i onClick={() => voteUp({post})} className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
                     <i className="fa fa-thumbs-o-down" aria-hidden="true"></i> */}
-                    <button className="btn-vote" onClick={() => this.props.voteUp(post.id,index)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                    <button className="btn-vote" onClick={() => this.props.voteDown(post.id,index)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                    <button className="btn-vote" onClick={() => this.handleVote(post.id,"upVote")}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                    <button className="btn-vote" onClick={() => this.handleVote(post.id,"downVote")}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                   </div>
                 </div>
               </div>

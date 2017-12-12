@@ -12,6 +12,7 @@ class WritePost extends Component {
     categoriesLoaded: false,
     category: '',
     selectedCategory: 'react',
+    thePostId: '',
     newPostTitle: '',
     newPostBody: '',
     newPostName: '',
@@ -31,15 +32,11 @@ class WritePost extends Component {
   handleEditPostSubmit = (event) => {
     event.preventDefault();
     var postData = {
-      id: uuidv1(),
-      timestamp: Date.now(),
       title: this.state.newPostTitle,
       body: this.state.newPostBody,
-      author: this.state.newPostName,
-      category: this.state.selectedCategory,
     }
 
-    apiUtils.newPost(postData)
+    apiUtils.editPost(this.state.thePostId, postData)
       .then(() => {
         this.setState({postSubmitted: true})
       });
@@ -56,6 +53,7 @@ class WritePost extends Component {
       .then((post) => {
         console.log(post, "got the post");
         this.setState({
+          thePostId: post.id,
           newPostTitle: post.title,
           newPostBody: post.body,
           newPostName: post.author,
@@ -129,7 +127,12 @@ class WritePost extends Component {
 
                 <div className="user-details">
                   <div className="user-image"></div>
-                  <input name="newPostName" type="text" value={this.state.newPostName} onChange={this.handleInputChange} placeholder="Your Name"/>
+                  {/* <input name="newPostName"
+                    type="text"
+                    value={this.state.newPostName}
+                    onChange={this.handleInputChange}
+                    placeholder="Your Name"/> */}
+                  <span name="newPostName" className="edit-name">{this.state.newPostName}</span>
                   <div className="user-nickname">Grand Master Illusionist</div>
                 </div>
 

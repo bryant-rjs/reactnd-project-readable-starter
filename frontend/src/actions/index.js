@@ -46,19 +46,17 @@ export function fetchPosts() {
   }
 }
 
-export function voteUp(postID, index) {
+export function voteUp(postID) {
   return {
     type: VOTE_UP,
     postID,
-    index,
   }
 }
 
-export function voteDown(postID, index) {
+export function voteDown(postID) {
   return {
     type: VOTE_DOWN,
     postID,
-    index,
   }
 }
 

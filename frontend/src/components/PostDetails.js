@@ -17,12 +17,31 @@ class PostDetails extends Component {
     newCommentText: '',
   }
 
-  handleCommentDelete = (commentId) => {
-    // apiUtils.deleteComment(commentId)
-    //   .then(() => {
-    //     this.props.deleteComment(commentId);
-    //   });
+  handleVote = (postId,direction) => {
+    console.log(direction,"the direction");
+    var directionData = {
+      option: direction,
+    }
+    apiUtils.scorePost(postId,directionData)
+      .then(() => {
+        if (directionData.option === 'upVote') this.props.voteUp(postId);
+        else this.props.voteDown(postId);
+      });
+  }
 
+  handleCommentVote = (commentId,direction) => {
+    console.log(direction,"the direction");
+    var directionData = {
+      option: direction,
+    }
+    apiUtils.scorePostComment(commentId,directionData)
+      .then(() => {
+        if (directionData.option === 'upVote') this.props.commentVoteUp(commentId);
+        else this.props.commentVoteDown(commentId);
+      });
+  }
+
+  handleCommentDelete = (commentId) => {
     this.props.deleteComment(commentId);
   }
 
@@ -101,11 +120,11 @@ class PostDetails extends Component {
 
     apiUtils.getPost(this.props.match.params.post_id)
       .then(post => {
-        this.setState(() => ({
-          myPost: post,
-          postLoaded: true,
-        }))
-      });
+        this.setState({myPost: post})
+      })
+        .then(() => {
+          this.setState({postLoaded:  true})
+        })
   }
   render() {
     if (!this.state.postLoaded) {
@@ -145,9 +164,8 @@ class PostDetails extends Component {
                     <span>
                       {(this.state.myPost.voteScore > 0) ? '+' : '' }{this.state.myPost.voteScore}&nbsp;
                     </span>
-                    <button className="btn-vote" onClick={() => this.props.voteUp(this.state.myPost.id,0)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                    <button className="btn-vote" onClick={() => this.props.voteDown(this.state.myPost.id,0)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
-
+                    <button className="btn-vote" onClick={() => this.handleVote(this.state.myPost.id,"upVote")}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                    <button className="btn-vote" onClick={() => this.handleVote(this.state.myPost.id,"downVote")}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                   </div>
                 </div>
                 <div className="post-body">
@@ -181,8 +199,8 @@ class PostDetails extends Component {
                             <span>
                               {(comment.voteScore > 0) ? '+' : '' }{comment.voteScore}&nbsp;
                             </span>
-                            <button className="btn-vote" onClick={() => this.props.commentVoteUp(comment.id)}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                            <button className="btn-vote" onClick={() => this.props.commentVoteDown(comment.id)}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                            <button className="btn-vote" onClick={() => this.handleCommentVote(comment.id,"upVote")}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                            <button className="btn-vote" onClick={() => this.handleCommentVote(comment.id,"downVote")}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                         </div>
                       </div>
                     </li>

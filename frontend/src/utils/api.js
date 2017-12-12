@@ -21,11 +21,37 @@ export function getPost(postID) {
       .then((data) => data)
 }
 export function newPost(postData) {
-  console.log(postData,"post data");
   return fetch(`${api}/posts`, {
     method: 'POST',
     headers: headers,
     body: JSON.stringify( postData ),
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
+export function editPost(postId, postData) {
+  return fetch(`${api}/posts/${postId}`, {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify( postData ),
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
+export function scorePost(postId, directionData) {
+  return fetch(`${api}/posts/${postId}`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify( directionData ),
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
+export function scorePostComment(commentId, directionData) {
+  return fetch(`${api}/comments/${commentId}`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify( directionData ),
   })
     .then((response) => response.json())
       .then((data) => data)

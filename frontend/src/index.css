@@ -358,3 +358,6 @@ margin-right: 5px;
 .edit-link:hover {
   color:#ffffff;
 }
+.edit-name {
+  font-weight: 800;
+}
