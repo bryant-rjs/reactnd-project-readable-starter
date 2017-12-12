@@ -43,6 +43,7 @@ class App extends Component {
     );
   }
 }
+
 function mapStateToProps({posts, categories}) {
   return {
     posts,
@@ -54,10 +55,6 @@ function mapDispatchToProps(dispatch) {
     initialPosts: initialPosts,
     initialCategories: initialCategories,
   }, dispatch)
-
-  // return {
-  //   initialPosts: (data) => dispatch(initialPosts(data))
-  // }
 }
 
 export default connect(

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { initialPosts, getPost, voteUp, voteDown, getComments, commentVoteUp, commentVoteDown,
-addNewPostComment, deleteComment } from '../actions'
+addNewPostComment, deleteComment, updateComment } from '../actions'
 import * as apiUtils from '../utils/api'
 import { capitalize } from '../utils/helpers'
 const uuidv1 = require('uuid/v1');
@@ -15,10 +16,21 @@ class PostDetails extends Component {
     postLoaded: false,
     newCommentName: '',
     newCommentText: '',
+    postDeleted: false,
+    editingComment: false,
+    editCommentName: '',
+    editCommentText: '',
+    editCommentId: '',
+  }
+
+  handlePostDelete = (postId) => {
+    apiUtils.deletePost(postId)
+      .then(() => {
+        this.setState({postDeleted: true})
+      });
   }
 
   handleVote = (postId,direction) => {
-    console.log(direction,"the direction");
     var directionData = {
       option: direction,
     }
@@ -30,7 +42,6 @@ class PostDetails extends Component {
   }
 
   handleCommentVote = (commentId,direction) => {
-    console.log(direction,"the direction");
     var directionData = {
       option: direction,
     }
@@ -42,7 +53,10 @@ class PostDetails extends Component {
   }
 
   handleCommentDelete = (commentId) => {
-    this.props.deleteComment(commentId);
+    apiUtils.deleteComment(commentId)
+      .then(() => {
+        this.props.deleteComment(commentId);
+      });
   }
 
   handleCommentInput = (event) => {
@@ -53,6 +67,30 @@ class PostDetails extends Component {
       [name]: value
     });
   }
+  handleCommentEdit = (comment) => {
+    this.setState(() => ({
+      editingComment: true,
+      editCommentName: comment.author,
+      editCommentText: comment.body,
+      editCommentId: comment.id,
+    }))
+  }
+  handleCommentUpdate = (event) => {
+    event.preventDefault();
+    var commentData = {
+      timestamp: Date.now(),
+      body: this.state.editCommentText,
+    }
+    apiUtils.updateComment(this.state.editCommentId, commentData)
+      .then(commentData => {
+        this.setState(() => ({
+          editingComment: false,
+        }))
+
+        this.props.updateComment(this.state.editCommentId, this.state.editCommentText);
+    });
+  }
+
   handleCommentSubmit = (event) => {
     event.preventDefault();
     if (this.state.newCommentName === '' || this.state.newCommentText === '') {
@@ -69,17 +107,7 @@ class PostDetails extends Component {
 
       apiUtils.putPostComment(newComment)
         .then(commentData => {
-          //console.log(data);
           this.props.addNewPostComment(commentData);
-                  // apiUtils.fetchPostComments(this.props.match.params.post_id)
-                  //   .then(comments => {
-                  //     // var objComments = comments.reduce((obj, item, index) => {
-                  //     //   obj[item.id] = item;
-                  //     //   return obj;
-                  //     // }, {});
-                  //     // this.props.getComments(objComments);
-                  //     this.props.getComments(comments);
-                  //   });
       });
     }
 
@@ -101,11 +129,6 @@ class PostDetails extends Component {
 
     apiUtils.fetchPostComments(this.props.match.params.post_id)
       .then(comments => {
-        // var objComments = comments.reduce((obj, item, index) => {
-        //   obj[item.id] = item;
-        //   return obj;
-        // }, {});
-        // this.props.getComments(objComments);
         this.props.getComments(comments);
       });
 
@@ -120,11 +143,14 @@ class PostDetails extends Component {
 
     apiUtils.getPost(this.props.match.params.post_id)
       .then(post => {
-        this.setState({myPost: post})
+        this.setState(() => ({
+          myPost: post
+        }))
       })
         .then(() => {
-          this.setState({postLoaded:  true})
+          this.setState({postLoaded: true})
         })
+
   }
   render() {
     if (!this.state.postLoaded) {
@@ -141,7 +167,8 @@ class PostDetails extends Component {
       )
     }
     else {
-      var postDate = new Date(this.state.myPost.timestamp).toLocaleString();
+      if (this.state.myPost !== null)
+        var postDate = new Date(this.state.myPost.timestamp).toLocaleString();
 
       return (
           <div className="container">
@@ -156,6 +183,27 @@ class PostDetails extends Component {
 
             <div className="row">
               <div className="col-md-8">
+
+                <div className="post-controls position-relative">
+                  <div className="card-top">
+                    <div className="card-edit">
+                      <button className="btn btn-primary">
+                        <Link to={`/edit-post/${this.state.myPost.id}`} className="edit-link">
+                          <i className="fa fa-pencil" aria-hidden="true"></i> Edit Post
+                        </Link>
+                      </button>
+                    </div>
+                    <div className="card-delete">
+                      <button onClick={() => this.handlePostDelete(this.state.myPost.id)} className="btn btn-danger">
+                        <i className="fa fa-times" aria-hidden="true"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                  {this.state.postDeleted && (
+                    <Redirect to='/'/>
+                  )}
+                </div>
+
                 <div className="post-image"></div>
                 <div className="post-details position-relative">
                   <div className="post-author">{capitalize(this.state.myPost.author)}</div>
@@ -176,47 +224,70 @@ class PostDetails extends Component {
               </div>
 
               <div className="col-md-4">
-                <div className="comment-title">
-                  <h5>Comments</h5>
-                  <span className="comments-icon"><i className="fa fa-commenting-o" aria-hidden="true"></i></span>
+                <div className={this.state.editingComment ? 'hide-list-view' : 'show-list-view' + ' comment-list-view'}>
+                  <div className="comment-title">
+                    <h5>Comments</h5>
+                    <span className="comments-icon"><i className="fa fa-commenting-o" aria-hidden="true"></i></span>
+                  </div>
+
+                  <ul className="comment-list">
+                    {this.props.allComments.map((comment) => (
+                      <li key={comment.id}>
+                        <div className="comment-control">
+                          <div className="comment-edit">
+                            <button className="btn-edit" onClick={() => this.handleCommentEdit(comment)}>
+                              <i className="fa fa-pencil" aria-hidden="true"></i> Edit
+                            </button>
+                          </div>
+                          <div className="comment-delete">
+                            <button className="btn-delete" onClick={() => this.handleCommentDelete(comment.id)}><i className="fa fa-times" aria-hidden="true"></i></button>
+                          </div>
+                        </div>
+                        <div className="comment-body">
+                          <p>{comment.body}</p>
+                        </div>
+                        <div className="comment-content position-relative">
+                          <div className="comment-details">
+                            <div className="comment-author"><small>{comment.author}</small></div>
+                            <div className="comment-timestamp"><small>{comment.timestamp}</small></div>
+                          </div>
+                          <div className="comment-score">
+                              <span>
+                                {(comment.voteScore > 0) ? '+' : '' }{comment.voteScore}&nbsp;
+                              </span>
+                              <button className="btn-vote" onClick={() => this.handleCommentVote(comment.id,"upVote")}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                              <button className="btn-vote" onClick={() => this.handleCommentVote(comment.id,"downVote")}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="comment-writenew">
+                    <h5>Write New Comment</h5>
+                    <span className="comments-icon"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                  </div>
+                  <div className="comment-writebody">
+                    <form onSubmit={this.handleCommentSubmit}>
+                      <input name="newCommentName" value={this.state.newCommentName} type="text" placeholder="Your Name" onChange={this.handleCommentInput}/>
+                      <textarea name="newCommentText" value={this.state.newCommentText} placeholder="What's on your mind?" rows="3" cols="1" className="comment-input-box" onChange={this.handleCommentInput}/>
+                      <input type="submit" value="Post Comment" className="btn btn-info"/>
+                    </form>
+                  </div>
                 </div>
 
-                <ul className="comment-list">
-                  {this.props.allComments.map((comment) => (
-                    <li key={comment.id}>
-                      <div className="comment-delete">
-                        <button className="btn-delete" onClick={() => this.handleCommentDelete(comment.id)}><i className="fa fa-times" aria-hidden="true"></i></button>
-                      </div>
-                      <div className="comment-body">
-                        <p>{comment.body}</p>
-                      </div>
-                      <div className="comment-content position-relative">
-                        <div className="comment-details">
-                          <div className="comment-author"><small>{comment.author}</small></div>
-                          <div className="comment-timestamp"><small>{comment.timestamp}</small></div>
-                        </div>
-                        <div className="comment-score">
-                            <span>
-                              {(comment.voteScore > 0) ? '+' : '' }{comment.voteScore}&nbsp;
-                            </span>
-                            <button className="btn-vote" onClick={() => this.handleCommentVote(comment.id,"upVote")}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                            <button className="btn-vote" onClick={() => this.handleCommentVote(comment.id,"downVote")}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="comment-writenew">
-                  <h5>Write New Comment</h5>
-                  <span className="comments-icon"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></span>
-                </div>
-                <div className="comment-writebody">
-                  <form onSubmit={this.handleCommentSubmit}>
-                    <input name="newCommentName" value={this.state.newCommentName} type="text" placeholder="Your Name" onChange={this.handleCommentInput}/>
-                    <textarea name="newCommentText" value={this.state.newCommentText} placeholder="What's on your mind?" rows="3" cols="1" className="comment-input-box" onChange={this.handleCommentInput}/>
-                    <input type="submit" value="Post Comment" className="btn btn-info"/>
-                  </form>
+                <div className={this.state.editingComment ? 'show-write-view' : 'hide-write-view' + ' comment-write-view'}>
+                  <div className="comment-writenew">
+                    <h5>Edit Comment</h5>
+                    <span className="comments-icon"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                  </div>
+                  <div className="comment-writebody">
+                    <form onSubmit={this.handleCommentUpdate}>
+                      <input className="comment-name-editing" name="editCommentName" value={this.state.editCommentName} readOnly type="text" />
+                      <textarea name="editCommentText" value={this.state.editCommentText} rows="3" cols="1" className="comment-input-box" onChange={this.handleCommentInput}/>
+                      <input type="submit" value="Update Comment" className="btn btn-info"/>
+                    </form>
+                  </div>
                 </div>
 
               </div>
@@ -256,6 +327,7 @@ function mapDispatchToProps(dispatch) {
     commentVoteDown: commentVoteDown,
     addNewPostComment: addNewPostComment,
     deleteComment: deleteComment,
+    updateComment: updateComment,
   }, dispatch)
 }
 
@@ -263,4 +335,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(PostDetails)
-//export default PostDetails;

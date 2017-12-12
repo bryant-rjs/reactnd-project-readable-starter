@@ -13,6 +13,7 @@ import {
   GET_COMMENTS,
   COMMENT_NEW,
   COMMENT_DELETE,
+  COMMENT_UPDATE,
 } from '../actions'
 
 function posts (state = {}, action) {
@@ -71,7 +72,6 @@ function categories(state = {}, action) {
 }
 
 function comments(state = {}, action) {
-
   switch(action.type) {
     case GET_COMMENTS:
       var objComments = action.comments.reduce((obj, item, index) => {
@@ -96,36 +96,25 @@ function comments(state = {}, action) {
         }
       }
     case COMMENT_NEW:
-      // console.log(state,"comment new state");
-      // console.log(action,"the full action");
-      // console.log(Object.keys(state),"object keys");
-      //state[action.comment.id] = action.comment;
-      //console.log(state,"full state again");
-
       return {
         ...state,
           [action.comment.id]: action.comment,
       }
     case COMMENT_DELETE:
-      // console.log(state,"comment delete state");
-      //
-      // console.log(action,"the full action");
-      // console.log(Object.keys(state),"object keys");
-      // console.log(Object.keys(state).filter((id) => id !== action.commentId))
-      //
-      // console.log(Object.keys(state)
-      //   .filter((id) => id !== action.commentId)
-      //     .reduce((obj, item) => {
-      //       obj[item] = state[item];
-      //       return obj;
-      //     }, {}))
-
       return Object.keys(state)
         .filter((id) => id !== action.commentId)
           .reduce((obj, item) => {
             obj[item] = state[item];
             return obj;
           }, {})
+    case COMMENT_UPDATE:
+      return {
+        ...state,
+        [action.commentId]: {
+          ...state[action.commentId],
+          body: action.commentText,
+        }
+      }
     default:
       return state
   }

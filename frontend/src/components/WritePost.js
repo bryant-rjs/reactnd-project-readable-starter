@@ -19,7 +19,6 @@ class WritePost extends Component {
   }
 
   handleInputChange = (event) => {
-    console.log(event.target.name);
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -58,7 +57,6 @@ class WritePost extends Component {
   }
 
   render() {
-    //console.log(this.state);
     if(!this.state.categoriesLoaded) {
       return (
         <div className="container">
@@ -99,24 +97,7 @@ class WritePost extends Component {
                         </label>
                       </li>
                     ))}
-                    {/* <li className="radio">
-                      <label className="btn btn-outline-primary">
-                        <input name="category" type="radio" value="option1" checked={true} onChange={event => this.handleQuery(event.target.value)} />
-                        Technology
-                      </label>
-                    </li>
-                    <li className="radio">
-                      <label className="btn btn-outline-primary">
-                        <input name="category" type="radio" value="option2" onChange={event => this.handleQuery(event.target.value)} />
-                        Creativity
-                      </label>
-                    </li>
-                    <li className="radio">
-                      <label className="btn btn-outline-primary">
-                        <input name="category" type="radio" value="option3" onChange={event => this.handleQuery(event.target.value)} />
-                        Culture
-                      </label>
-                    </li> */}
+
                   </ul>
                 </div>
 

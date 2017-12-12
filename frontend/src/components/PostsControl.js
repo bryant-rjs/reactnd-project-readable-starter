@@ -20,7 +20,7 @@ class PostsControl extends Component {
 
 
   render() {
-    
+
     const { categories } = this.props;
     return (
         <div className="container clearfix">
@@ -35,18 +35,7 @@ class PostsControl extends Component {
                   <Link to={`/category/${category.name}`} className="nav-link">{capitalize(category.name)}</Link>
                 </li>
               ))}
-              {/* <li className="nav-item">
-                <a className="nav-link">All</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link">Technology</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link">Creativity</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link">Culture</a>
-              </li> */}
+
             </ul>
           </div>
 
@@ -81,4 +70,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(PostsControl)
-//export default PostsControl;

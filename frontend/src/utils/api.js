@@ -57,7 +57,6 @@ export function scorePostComment(commentId, directionData) {
       .then((data) => data)
 }
 export function deletePost(postId) {
-  console.log(postId,"post id delete post");
   return fetch(`${api}/posts/${postId}`, {
     method: 'DELETE',
     headers: headers,
@@ -89,6 +88,16 @@ export function putPostComment(newComment) {
     method: 'POST',
     headers: headers,
     body: JSON.stringify( newComment ),
+  })
+    .then((response) => response.json())
+      .then((data) => data)
+}
+
+export function updateComment(commentId, commentData) {
+  return fetch(`${api}/comments/${commentId}`, {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify( commentData ),
   })
     .then((response) => response.json())
       .then((data) => data)

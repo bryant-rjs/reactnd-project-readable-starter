@@ -10,6 +10,7 @@ export const COMMENT_VOTEUP = 'COMMENT_VOTEUP';
 export const COMMENT_VOTEDOWN = 'COMMENT_VOTEDOWN';
 export const COMMENT_NEW = 'COMMENT_NEW';
 export const COMMENT_DELETE = 'COMMENT_DELETE';
+export const COMMENT_UPDATE = 'COMMENT_UPDATE';
 
 export function initialPosts( posts ) {
   return {
@@ -26,7 +27,6 @@ export function deletePost( postId ) {
 }
 
 export function getPost( posts ) {
-  console.log(posts, "what is posts");
   return {
     type: GET_POST,
     posts
@@ -92,5 +92,13 @@ export function deleteComment(commentId) {
   return {
     type: COMMENT_DELETE,
     commentId,
+  }
+}
+
+export function updateComment(commentId, commentText) {
+  return {
+    type: COMMENT_UPDATE,
+    commentId,
+    commentText,
   }
 }

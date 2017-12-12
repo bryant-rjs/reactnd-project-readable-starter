@@ -89,6 +89,10 @@ button {
   position: absolute;
   width: 100%;
 }
+.post-controls .card-top {
+  top:15px;
+  right: 5px;
+}
 .card-edit {
   top: 0;
   right: 0;
@@ -231,18 +235,31 @@ button {
   padding:20px 20px;
   position: relative;
 }
+.comment-control {
+  position: relative;
+  text-align: right;
+}
+.comment-edit {
+  display: inline-block;
+  margin-right:5px;
+}
+.comment-edit .btn-edit {
+  color: #0275d8;
+  background: none;
+  border: 1px solid #0275d8;
+  border-radius: 3px;
+}
 .comment-delete {
-  position: absolute;
-  top:0;
-  right:0px;
   color:#dc3545;
-  font-size:20px;
+  display: inline-block;
 }
 .comment-delete .btn-delete {
   color: #dc3545;
   background: none;
   border: 0;
   cursor: pointer;
+  border: 1px solid #dc3545;
+  border-radius: 3px;
 }
 .post-body {
   padding: 10px;
@@ -360,4 +377,27 @@ margin-right: 5px;
 }
 .edit-name {
   font-weight: 800;
+}
+.delete-post-link {
+  color: #ffffff;
+}
+.delete-post-link:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+.comment-name-editing{
+  border: 0 !important;
+  font-weight: 800;
+}
+.hide-list-view {
+  display: none;
+}
+.show-list-view {
+  display: block;
+}
+.hide-write-view {
+  display: none;
+}
+.show-write-view {
+  display: block;
 }

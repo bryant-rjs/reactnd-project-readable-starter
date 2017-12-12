@@ -17,7 +17,6 @@ class Posts extends Component {
   }
 
   handleVote = (postId,direction) => {
-    console.log(direction,"the direction");
     var directionData = {
       option: direction,
     }
@@ -36,7 +35,6 @@ class Posts extends Component {
   }
 
   handleSortSelect = (string,event) => {
-    console.log(event.target.value);
     this.setState({ sort: event.target.value });
 
     switch(event.target.value) {
@@ -90,17 +88,11 @@ class Posts extends Component {
         if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
           this.setState(() => ({
             chosenCategory: '',
-            // ourPosts: Object.keys(this.props.posts).map((item) => {
-            //   return this.props.posts[item]
-            // })
           }))
         }
         else {
           this.setState(() => ({
             chosenCategory: this.props.match.params.category_name,
-            // ourPosts: arrPosts.filter((post) => (
-            //     post.category === this.props.match.params.category_name
-            //   ))
           }))
         }
 
@@ -112,24 +104,10 @@ class Posts extends Component {
   }
 
   render() {
-    // if (this.state.chosenCategory !== '') {
-    //   this.props.myPosts.filter((cur) => (
-    //     cur.category === this.state.chosenCategory
-    //   ))
-    // } else {
-    //   this.props.myPosts.filter((cur) => (
-    //     cur.category === this.state.chosenCategory
-    //   ))
-    // }
+
     this.props.myPosts.map((item) => (
       item.date = new Date(item.timestamp).toLocaleString()
     ))
-
-    this.props.myPosts.map((item) => {
-      console.log(item)
-    })
-
-
 
     return (
       <div className="container position-relative">
@@ -146,33 +124,7 @@ class Posts extends Component {
         </div>
 
         <div className="posts-lists"></div>
-        {/* <ul className="posts-list row">
-          {this.props.myPosts
-            .map((post, index) => (
-            <li className="col-md-4" key={post.id}>
-              <div className="card">
-                <img className="card-img-top" alt=""/>
-                <div className="card-body">
-                  <h4 className="card-title">{post.title}</h4>
-                  <p className="card-text">{post.body}</p>
-                  <Link to={`/category/${post.category}/${post.id}`} className="btn btn-outline-primary">Read More</Link>
 
-                </div>
-                <div className="card-footer">
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                  <div className="score">
-                    <span>
-                      {(post.voteScore > 0) ? '+' : '' }{post.voteScore}&nbsp;
-                    </span>
-                    <i onClick={() => voteUp({post})} className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
-                    <i className="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                    <button onClick={() => this.props.voteUp(post.id,index)}>asdfsdf</button>
-                  </div>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul> */}
         <ul className="posts-list row">
           {this.props.myPosts
             .filter((cur) => {
@@ -211,8 +163,7 @@ class Posts extends Component {
                     <span>
                       {(post.voteScore > 0) ? '+' : '' }{post.voteScore}&nbsp;
                     </span>
-                    {/* <i onClick={() => voteUp({post})} className="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;
-                    <i className="fa fa-thumbs-o-down" aria-hidden="true"></i> */}
+
                     <button className="btn-vote" onClick={() => this.handleVote(post.id,"upVote")}><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                     <button className="btn-vote" onClick={() => this.handleVote(post.id,"downVote")}><i className="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
                   </div>
@@ -254,4 +205,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Posts)
-//export default Posts;
