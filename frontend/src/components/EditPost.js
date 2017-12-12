@@ -50,7 +50,6 @@ class WritePost extends Component {
     this.setState({categoriesLoaded: true});
     apiUtils.getPost(this.props.match.params.post_id)
       .then((post) => {
-        console.log(post, "got the post");
         this.setState({
           thePostId: post.id,
           newPostTitle: post.title,

@@ -1,3 +1,5 @@
+// Final Commit: Yay I did it!
+// It got easier.. and the code got cleaner as I made progress... :)
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom'
