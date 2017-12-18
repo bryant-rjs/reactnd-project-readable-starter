@@ -21,6 +21,7 @@ class PostDetails extends Component {
     editCommentName: '',
     editCommentText: '',
     editCommentId: '',
+    postMsg: "Loading Post...",
   }
 
   handlePostDelete = (postId) => {
@@ -127,11 +128,6 @@ class PostDetails extends Component {
         this.props.initialPosts(posts);
       });
 
-    apiUtils.fetchPostComments(this.props.match.params.post_id)
-      .then(comments => {
-        this.props.getComments(comments);
-      });
-
     if ( this.props.match.params == null || (Object.getOwnPropertyNames(this.props.match.params).length === 0) ) {
 
     } else {
@@ -139,17 +135,30 @@ class PostDetails extends Component {
         curCategory: this.props.match.params.category_name,
         curPostID: this.props.match.params.post_id
       }))
-    }
 
-    apiUtils.getPost(this.props.match.params.post_id)
-      .then(post => {
-        this.setState(() => ({
-          myPost: post
-        }))
-      })
-        .then(() => {
-          this.setState({postLoaded: true})
+      apiUtils.fetchPostComments(this.props.match.params.post_id)
+        .then(comments => {
+          this.props.getComments(comments);
+        });
+
+      apiUtils.getPost(this.props.match.params.post_id)
+        .then(post => {
+          if(!post.error) {
+            this.setState(() => ({
+              myPost: post
+            }))
+          }
+          return post;
         })
+          .then((post) => {
+            if(!post.error) {
+              this.setState({postLoaded: true})
+            }
+            else {
+              this.setState({postMsg: "There was an error loading this post."})
+            }
+          })
+    }
 
   }
   render() {
@@ -159,7 +168,7 @@ class PostDetails extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="category-box">
-                <div className="post-title">Loading Post...</div>
+                <div className="post-title">{this.state.postMsg}</div>
               </div>
             </div>
           </div>
